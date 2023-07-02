@@ -64,4 +64,27 @@ class Users
         return array();
     }
 
+    public function create_project(){
+        //insert project
+        $query = "INSERT INTO ". $this->projects_tbl . " SET user_id = ?, name = ?, description = ?, status = ?";
+
+        //prepare query
+        $prepare = $this->conn->prepare($query);
+
+        //sanitize input 
+        $this->name = htmlspecialchars(strip_tags($this->user_id));
+        $this->email = htmlspecialchars(strip_tags($this->name));
+        $this->password = htmlspecialchars(strip_tags($this->description));
+        $this->password = htmlspecialchars(strip_tags($this->status));
+
+        //binding parameter
+        $prepare->bind_param("isss", $this->user_id, $this->name, $this->description, $this->status);
+
+        if ($prepare->execute()) {
+           return true;
+        }
+        
+        return false;
+    }
+
 }

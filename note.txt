@@ -85,3 +85,30 @@ nbf =>Not Before means, ensures that the token is not used before a certain time
 exp =>  sets an expiration time after which the token is no longer considered valid. 
 
 data => other information, user datas
+
+
+{
+    "status": 200,
+    "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsb2NhbGhvc3QiLCJpYXQiOjE2ODgzMzExMjUsIm5iZiI6MTY4ODMzMTE2NSwiYXVkIjoibXl1c2VycyIsImRhdGEiOnsiaWQiOjQsIm5hbWUiOiJtdWhhbW1hZCIsImVtYWlsIjoibXVoYW1tYWRAZ21haWwuY29tIn19.iG9eho9DmHGtC_VuClhv0qXmwHbuy2PDTl1RgWq2xV8",
+    "message": "User logged in successfully"
+}
+
+
+
+{
+    "status": 200,
+    "user data": [
+        {
+            "iss": "localhost",
+            "iat": 1688335899,
+            "nbf": 1688335939,
+            "aud": "myusers",
+            "data": {
+                "id": 4,
+                "name": "muhammad",
+                "email": "muhammad@gmail.com"
+            }
+        }
+    ],
+    "message": "Jwt received successfully"
+}

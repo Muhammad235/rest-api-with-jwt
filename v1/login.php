@@ -20,6 +20,7 @@ $connection = $db->connect();
 
 $user_obj = new Users($connection);
 
+
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     
     $data = json_decode(file_get_contents("php://input"));
@@ -43,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                 $iss = "localhost";
                 $iat = time();
                 $nbf = $iat + 10;
-                $exp = $iat + 60;
+                // $exp = $iat + 0;
                 $aud = "myusers";
                 $use_arr_data = array(
                     "id" => $user_data['id'],
@@ -59,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                     "iss" => $iss,
                     "iat" => $iat,
                     "nbf" => $nbf,
-                    "exp" => $exp,
+                    // "exp" => $exp,
                     "aud" => $aud,
                     "data" => $use_arr_data
                 );
@@ -68,12 +69,23 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                 $jwt =  JWT::encode($payload_info, $secret_key, $algorithm);
 
                http_response_code(200);
+
+               //method 2
+            //    $result[] = array(
+            //     "status" => 200,
+            //     "jwt" => $jwt,
+            //      "message" => "User logged in successfully"
+            //    );
+            //    $response['result'] = $result;
+
                echo json_encode(array(
 
                 "status" => 200,
                 "jwt" => $jwt,
                  "message" => "User logged in successfully"
                ));
+
+
             }else {
                 http_response_code(401); //Unauthorized - a valid email with an invalid password = Unauthorized
 
@@ -111,19 +123,4 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 }
 
 
-// {
-//     "status": 200,
-//     "user data": {
-//         "iss": "localhost",
-//         "iat": 1688328038,
-//         "nbf": 1688328048,
-//         "exp": 1688328098,
-//         "aud": "myusers",
-//         "data": {
-//             "id": 4,
-//             "name": "muhammad",
-//             "email": "muhammad@gmail.com"
-//         }
-//     },
-//     "message": "Jwt received successfully"
-// }
+
