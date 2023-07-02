@@ -64,5 +64,4 @@ class Users
         return array();
     }
 
-
 }

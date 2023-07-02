@@ -2,9 +2,86 @@ JWT Structure
 
 xxxxx.yyyyy.zzzzz  (Header.Payload.Signature)
 
+
+
+Header:
 alg = The header typically consists of two parts: the type of the token, which is JWT, and the signing algorithm being used, such as HMAC SHA256 or RSA.
 
 Header : Base64Url ( {
     "alg" : "HS256",
     "typ" : "JWT"
 })
+
+
+Payload:
+The second part of the token is the payload, which contains the claims. Claims are statements about an entity (typically, the user) and additional data. There are three types of claims: registered, public, and private claims.
+
+An example payload could be:
+
+Base64Url( {
+  "sub": "1234567890",
+  "name": "John Doe",
+  "admin": true
+} )
+The payload is then Base64Url encoded to form the second part of the JSON Web
+
+
+Signature
+To create the signature part you have to take the encoded header, the encoded payload, a secret, the algorithm specified in the header, and sign that.
+
+For example if you want to use the HMAC SHA256 algorithm, the signature will be created in the following way:
+
+HMACSHA256(
+  base64UrlEncode(header) + "." +
+  base64UrlEncode(payload),
+  secret)
+
+
+Putting all together
+
+The following shows a JWT that has the previous header and payload encoded, and it is signed with a secret. Encoded JWT
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbXljb21wYW55LmNvbSIsImlhdCI6MTYyMzg0OTMwMCwiZXhwIjoxNjIzODUyOTAwfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
+
+JWT PAYLOAD DATA PARAMETERS
+
+ //jwt payload data parameters
+                $iss = "localhost";
+                $iat = time();
+                $nbf = $iat + 10;
+                $exp = $iat + 30;
+                $aud = "myusers";
+                $use_arr_data = array(
+                    "id" => $user_data['id'],
+                    "name" => $user_data['name'],
+                    "email" => $user_data['email']
+                );
+
+
+                $secret_key = "authorization_secret_key";
+                $algorithm = 'HS256';
+
+                $payload_info = array(
+                    "iss" => $iss,
+                    "iat" => $iat,
+                    "nbf" => $nbf,
+                    "exp" => $exp,
+                    "aud" => $aud,
+                    "data" => $use_arr_data
+                );
+
+                $jwt =  JWT::encode($payload_info, $secret_key, $algorithm);
+                $algorithm = 'HS256';
+
+iss => Issued by (Generally hostname we can specify or any information)
+
+aud => for which users
+
+iat => Issued at (At which time it was created, most after current time)
+
+nbf =>Not Before means, ensures that the token is not used before a certain time
+
+exp =>  sets an expiration time after which the token is no longer considered valid. 
+
+data => other information, user datas
