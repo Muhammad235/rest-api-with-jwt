@@ -87,4 +87,32 @@ class Users
         return false;
     }
 
+    public function get_all_user_project(){
+        //get all project by user_id
+        $query = "SELECT * FROM " . $this->projects_tbl ." WHERE user_id = ? ";
+
+        $stmt = $this->conn->prepare($query);
+
+        //sanitize input 
+        $this->name = htmlspecialchars(strip_tags($this->user_id));
+
+        //binding parameter
+        $stmt->bind_param("i", $this->user_id);
+
+        $stmt->execute();
+
+        return $stmt->get_result();
+    }
+
+    public function get_all_project(){
+        //get all project
+        $query = "SELECT * FROM " . $this->projects_tbl ." ";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->execute();
+
+        return $stmt->get_result();
+    }
+
 }
